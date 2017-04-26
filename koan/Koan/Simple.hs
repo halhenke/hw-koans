@@ -21,19 +21,19 @@ enrolled = False
 -- There is only a single possible definition of the first two functions.
 -- Try to work out what they need to do based on their type signature alone.
 id :: a -> a
-id = error "TODO: Implement id"
+id a = a
 
 const :: a -> b -> a
-const = error "TODO: Implement const"
+const a b = a
 
 -- This is function composition, i.e. (f . g)(x) == f(g(x))
 (.) :: (b -> c) -> (a -> b) -> a -> c
-(.) = error "TODO: Implement (.)"
+(.) a b x = a (b x) 
 
 -- This flips the argument order of a function, i.e.
 -- f(a,b) == (flip f)(b,a)
 flip :: (a -> b -> c) -> b -> a -> c
-flip = error "TODO: Implement flip"
+flip a b c = a c b
 
 -- This is function application (i.e. calling a function), but with a lower
 -- precedence than normal
