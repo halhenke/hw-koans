@@ -118,10 +118,10 @@ take n (x:xs)
 -- Similar to the above, but drop the first `n` elements and return the rest.
 -- If there are less than `n` elements, return an empty list.
 drop :: Int -> [a] -> [a]
-drop n (x:xs)
-  | n <= 0      = xs
-  | otherwise   = drop (n - 1) xs
 drop n [] = []
+drop n (x:xs)
+  | n <= 0      = (x:xs)
+  | otherwise   = drop (n - 1) xs
 -- drop n xs     | n <= 0 =  xs
 -- drop _ []              =  []
 -- drop n (_:xs)          =  drop (n-1) xs
@@ -135,7 +135,14 @@ takeWhile f (x:xs)
 
 -- You get the idea.
 dropWhile :: (a -> Bool) -> [a] -> [a]
-dropWhile = error "TODO: Implement dropWhile"
+dropWhile f [] = [] 
+dropWhile f (x:xs) 
+  | f x       = dropWhile f xs
+  | otherwise = x:xs
+-- dropWhile _ []          =  []
+-- dropWhile p xs@(x:xs')
+--             | p x       =  dropWhile p xs'
+--             | otherwise =  xs
 
 --------------------------------------------------------------------------------
 -- Higher order functions on lists
@@ -144,33 +151,47 @@ dropWhile = error "TODO: Implement dropWhile"
 -- These are the classic map, filter, and fold (a.k.a reduce) for lists.
 
 map :: (a -> b) -> [a] -> [b]
-map = error "TODO: Implement map"
+map f [] = []
+map f (x:xs) = f x : map f xs
 
 filter :: (a -> Bool) -> [a] -> [a]
-filter = error "TODO: Implement filter"
+filter f [] = []
+filter f (x:xs) = case (f x) of
+  True -> x : filter f xs
+  _ -> filter f xs
 
 -- The 'l' in `foldl` indicates that it is left-associative.
 foldl :: (b -> a -> b) -> b -> [a] -> b
-foldl = error "TODO: Implement fold"
+foldl f i [] = i
+foldl f i (x:xs) = foldl f (f i x) xs 
 
 -- Similarly, the 'r' indicates `foldr` is right associative.
 foldr :: (a -> b -> b) -> b -> [a] -> b
-foldr = error "TODO: Implement foldr"
+foldr f i [] = i
+foldr f i (x:xs) = f x (foldr f i xs)
 
 -- Functions which tell you whether any or all of the elements of a list
 -- satisfy a given predicate.
 any :: (a -> Bool) -> [a] -> Bool
-any = error "TODO: Implement any"
+any f [] = False
+any f (x:xs)
+  | f x       = True
+  | otherwise = any f xs
 
 all :: (a -> Bool) -> [a] -> Bool
-all = error "TODO: Implement all"
+all f [] = True
+all f (x:xs)
+  | not (f x)       = False
+  | otherwise     = all f xs
 
 -- This should take a binary (i.e. two argument) function, and two lists, and
 -- "zip" the elements of the list together pairwise using that function.
 -- If one input is shorter than the other, it should discard the excess
 -- elements of the longer list.
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-zipWith = error "TODO: Implement zipWith"
+zipWith f a [] = []
+zipWith f [] b = []
+zipWith f (x:xs) (y:ys) = f x y : zipWith f xs ys
 
 --------------------------------------------------------------------------------
 -- Currying
