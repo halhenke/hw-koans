@@ -16,7 +16,7 @@ module Koan.Simple where
 import           Prelude hiding (all, any, const, curry, drop, dropWhile, elem, filter, flip, foldl, foldr, id, iterate, length, map, max, maximum, min, minimum, repeat, reverse, take, takeWhile, uncurry, zipWith, (!!), ($), (++), (.))
 
 enrolled :: Bool
-enrolled = False
+enrolled = True
 
 -- There is only a single possible definition of the first two functions.
 -- Try to work out what they need to do based on their type signature alone.
@@ -38,7 +38,7 @@ flip a b c = a c b
 -- This is function application (i.e. calling a function), but with a lower
 -- precedence than normal
 ($) :: (a -> b) -> a -> b
-($) = error "TODO: Implement ($)"
+($) a x = a x
 
 -- Precedence definition for ($). You don't need to do anything here.
 infixr 0 $
@@ -51,13 +51,20 @@ infixr 0 $
 
 -- Return the length of a list
 length :: [a] -> Int
-length = error "TODO: Implement length"
+length (x:xs) = 1 + length xs
+length [] = 0
 
 -- This returns the element at a specific index in a list (if it exists),
 -- or nothing otherwise.
 -- You'll probably need to use pattern matching.
 (!!) :: [a] -> Int -> Maybe a
-(!!) = error "TODO: Implement (!!)"
+-- (!!) = error "TODO: Implement (!!)"
+(!!) (x:xs) b
+  | b > 0     = (!!) xs (b - 1)
+  | otherwise = Just x
+(!!) [] b = Nothing
+
+
 
 -- ASIDE: In the standard library, (!!) has the type `[a] -> Int -> a`
 -- meaning it fails (crashes the program) if the index you request does not
@@ -66,14 +73,20 @@ length = error "TODO: Implement length"
 -- This concatenates two lists together.
 -- Again, you'll probably need to use pattern matching.
 (++) :: [a] -> [a] -> [a]
-(++) = error "TODO: Implement (++)"
+(++) (x:xs) b = (:) x ((++) xs b)
+(++) [] b = b
 
 -- Reverse a list.
 -- Note that while you can get a "correct" solution using (++), it will be very
 -- inefficient. Try to implement it without that. You may need a helper
 -- function or a sub function.
 reverse :: [a] -> [a]
-reverse = error "TODO: Implement reverse"
+-- reverse (x:xs) = (reverse xs) : [x]
+reverse [] = [] 
+reverse x = let
+  helper [] y = y
+  helper (y:ys) z = helper ys (y:z)
+  in helper x [] 
 
 --------------------------------------------------------------------------------
 -- Infinite lists
@@ -83,26 +96,42 @@ reverse = error "TODO: Implement reverse"
 
 -- repeat the input forever.
 repeat :: a -> [a]
-repeat = error "TODO: Implement repeat"
+repeat a = a:repeat a
+-- repeat [] = [[]]
+-- repeat (x:xs) = [x] ++ (repeat xs)
 
 -- Return a list of the result of repeatedly applying f to x
 -- i.e iterate f x = [x, f x, f (f x), ...]
 iterate :: (a -> a) -> a -> [a]
-iterate = error "TODO: Implement iterate"
+-- iterate f [] = [] 
+-- iterate f (x:xs) = (f x):(iterate f _xs)
+iterate f x = x : iterate f (f x)
 
 -- Returns the first `n` elements of a list.
 -- If there are less than `n` elements, just return all of them.
 take :: Int -> [a] -> [a]
-take = error "TODO: Implement take"
+take n [] = []
+take n (x:xs)
+  | n > 0     = x : take (n - 1) xs
+  | otherwise = []
 
 -- Similar to the above, but drop the first `n` elements and return the rest.
 -- If there are less than `n` elements, return an empty list.
 drop :: Int -> [a] -> [a]
-drop = error "TODO: Implement drop"
+drop n (x:xs)
+  | n <= 0      = xs
+  | otherwise   = drop (n - 1) xs
+drop n [] = []
+-- drop n xs     | n <= 0 =  xs
+-- drop _ []              =  []
+-- drop n (_:xs)          =  drop (n-1) xs
 
 -- Take as long as the elements in the list satisfy the given predicate.
 takeWhile :: (a -> Bool) -> [a] -> [a]
-takeWhile = error "TODO: Implement takeWhile"
+takeWhile f [] = [] 
+takeWhile f (x:xs) 
+  | f x       = x : takeWhile f xs
+  | otherwise = []
 
 -- You get the idea.
 dropWhile :: (a -> Bool) -> [a] -> [a]
