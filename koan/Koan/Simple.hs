@@ -200,11 +200,11 @@ zipWith f (x:xs) (y:ys) = f x y : zipWith f xs ys
 -- Turn an uncurried function (i.e. one that takes a tuple as its argument)
 -- and curry it (i.e. make it take its arguments one-by-one)
 curry :: ((a, b) -> c) -> a -> b -> c
-curry = error "TODO: Implement curry"
+curry f a b = f (a, b) 
 
 -- The inverse of the above.
 uncurry :: (a -> b -> c) -> (a, b) -> c
-uncurry = error "TODO: Implement uncurry"
+uncurry f (a, b) = (f a) b
 
 --------------------------------------------------------------------------------
 -- Functions require Equality
@@ -212,7 +212,10 @@ uncurry = error "TODO: Implement uncurry"
 
 -- Determines if an element is in a list
 elem :: Eq a => a -> [a] -> Bool
-elem = error "TODO: Implement elem"
+elem a [] = False
+elem a (x:xs) = case (a == x) of
+  True -> True
+  _ -> elem a xs
 
 --------------------------------------------------------------------------------
 -- Functions require Ordering
@@ -221,19 +224,43 @@ elem = error "TODO: Implement elem"
 -- Take to guess what these should do!
 
 max :: Ord a => a -> a -> a
-max = error "TODO: Implement max"
+max a b = case a > b of
+  True -> a
+  _ -> b
 
 min :: Ord a => a -> a -> a
-min = error "TODO: Implement min"
+min a b = if a < b
+  then a
+  else b
 
 -- Note: These can fail if the list is empty.
 -- We'll alow that in thise case. You can use the `error` function to return
 -- an error.
 maximum :: Ord a => [a] -> a
-maximum = error "TODO: Implement maximum"
+-- maximum a = case a of
+--   [] -> 0
+--   (x:xs) -> foldr max x xs
+-- maximum [] = error "TODO: Implement maximum"
+-- maximum (x:xs) = foldr max x xs
+-- -- maximum [x] = x
+-- -- maximum (x:xs) = helper x xs
+-- --   where 
+-- --     helper a [] = a
+-- --     helper a b = foldr max a b
+--     -- helper a b = max a b
+maximum [] = error "TODO: Implement maximum"
+maximum (x:xs) = helper x xs 
+  where
+    helper a [] = a
+    helper a (b:bs) = helper (max a b) bs
+
+-- | The largest element of a non-empty structure.
+-- maximum :: forall a . Ord a => t a -> a
+-- maximum = fromMaybe (errorWithoutStackTrace "maximum: empty structure") .
+--     getMax . foldMap (Max #. (Just :: a -> Maybe a))
 
 minimum :: Ord a => [a] -> a
-minimum = error "TODO: Implement minimum"
+minimum (x:xs) = foldr min x xs
 
 --------------------------------------------------------------------------------
 -- Miscellaneous Exercises
@@ -241,5 +268,5 @@ minimum = error "TODO: Implement minimum"
 
 -- Define a list of all fibonacci numbers.
 -- (Hint: Try to use the `zipWith` function defined above)
-fibonacci :: [Int]
-fibonacci = error "TODO: Implement fibonacci"
+-- fibonacci :: [Int]
+-- fibonacci = error "TODO: Implement fibonacci"

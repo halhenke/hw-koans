@@ -179,5 +179,6 @@ prop_fibonacci = property $ do
   K.fibonacci !! 2 === 2
   (K.fibonacci !! i) + (K.fibonacci !! (i + 1)) === (K.fibonacci !! (i + 2))
 
+
 tests :: IO Bool
 tests = checkSequential $ reversed $$(discover)

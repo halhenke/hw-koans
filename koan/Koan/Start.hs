@@ -1,7 +1,7 @@
 module Koan.Start where
 
 enrolled :: Bool
-enrolled = False
+enrolled = True
 
 meaningOfLife :: Int
-meaningOfLife = error "TODO: implement meaningOfLife"
+meaningOfLife = 42
