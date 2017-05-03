@@ -40,14 +40,12 @@ elem f (x:xs)
   | otherwise   = elem f xs
 
 nub :: Eq a => [a] -> [a]
-nub a = let
-  helper a []     = a
-  helper a (b:bs) = (filter (not . (== b)) a) : helper bs
-  in
-    helper a []
--- nub f (x:xs)
---   | f == x      = True
---   | otherwise   = nub f xs
+nub [] = []
+nub (x:xs) = x:(nub (filter (x /=) xs))
 
 isPrefixOf :: Eq a => [a] -> [a] -> Bool
-isPrefixOf = error "TODO: implement isPrefixOf"
+isPrefixOf [] _ = True
+isPrefixOf _ [] = False
+isPrefixOf (a:as) (b:bs)
+  | a == b = isPrefixOf as bs
+  | otherwise = False
