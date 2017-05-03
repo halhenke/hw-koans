@@ -171,13 +171,13 @@ prop_minimum = property $ do
   as <- forAll $ Gen.list (Range.linear 1 100) (Gen.int (Range.constantBounded))
   K.minimum as === P.minimum as
 
-prop_fibonacci :: Property
-prop_fibonacci = property $ do
-  i <- forAll $ Gen.int (Range.linear 0 100)
-  K.fibonacci !! 0 === 1
-  K.fibonacci !! 1 === 1
-  K.fibonacci !! 2 === 2
-  (K.fibonacci !! i) + (K.fibonacci !! (i + 1)) === (K.fibonacci !! (i + 2))
+-- prop_fibonacci :: Property
+-- prop_fibonacci = property $ do
+--   i <- forAll $ Gen.int (Range.linear 0 100)
+--   K.fibonacci !! 0 === 1
+--   K.fibonacci !! 1 === 1
+--   K.fibonacci !! 2 === 2
+--   (K.fibonacci !! i) + (K.fibonacci !! (i + 1)) === (K.fibonacci !! (i + 2))
 
 
 tests :: IO Bool
