@@ -3,7 +3,7 @@ module Koan.Maybe where
 import           Prelude hiding (Maybe (..))
 
 enrolled :: Bool
-enrolled = False
+enrolled = True
 
 -- Define a "Maybe" data type.
 -- It should represent the concept of there being zero or exactly one instance
@@ -15,51 +15,82 @@ data Maybe a = Nothing | Just a deriving (Eq, Show)
 -- This should return the contents of the 'Maybe' if it exists, otherwise
 -- it should return the provided value.
 orElse :: Maybe a -> a -> a
-orElse = error "TODO: Implement orElse"
+orElse (Just a) b = a
+orElse Nothing b = b
 
 -- This should return the first Maybe if there's something in it.
 -- If not, it should return the second Maybe (regardless of whether its empty
 -- or not).
 orMaybe :: Maybe a -> Maybe a -> Maybe a
-orMaybe = error "TODO: Implement orMaybe"
+orMaybe a b = case a of
+  Just c -> Just c
+  _ -> b
 
 -- This should apply a function to the contents of a Maybe, if it exists.
 mapMaybe :: (a -> b) -> Maybe a -> Maybe b
-mapMaybe = error "TODO: Implement mapMaybe"
+mapMaybe f a = case a of
+  Just a -> Just (f a)
+  _ -> Nothing
+-- mapMaybe = error "TODO: Implement foldMaybe"
+
 
 -- Concatenate all the Maybes in the input list, so that you end up with only
 -- the ones that have something in them.
 concatMaybes :: [Maybe a] -> [a]
-concatMaybes = error "TODO: Implement concatMaybes"
+concatMaybes [] = []
+concatMaybes (x:xs) = case x of
+  Just a -> a : concatMaybes xs
+  _ -> concatMaybes xs
 
 -- Filter for Maybes.  Think of Maybes as a collection of at most one element.
 -- This function should remove all elements that fail the predicate (a -> Bool)
 filterMaybe :: (a -> Bool) -> Maybe a -> Maybe a
-filterMaybe = error "TODO: Implement filterMayber"
+filterMaybe f Nothing = Nothing
+filterMaybe f (Just x)
+  | f x       = Just x
+  | otherwise = Nothing
+
 
 -- Fold for Maybes.
 foldMaybe :: (b -> a -> b) -> b -> Maybe a -> b
-foldMaybe = error "TODO: Implement foldMaybe"
+foldMaybe f x y = case y of
+  Just a -> f x a
+  _ -> x
 
 -- Similar to the map function above, but now the function to apply is also in
 -- a Maybe.
 applyMaybe :: Maybe (a -> b) -> Maybe a -> Maybe b
-applyMaybe = error "TODO: Implement applyMaybe"
+applyMaybe Nothing x = Nothing
+applyMaybe (Just f) x = case x of
+  Just a -> Just (f a)
+  _ -> Nothing
 
 -- Similar to the above map function, but now we must deal with
 -- the input function also returning a Maybe.
 bindMaybe :: (a -> Maybe b) -> Maybe a -> Maybe b
-bindMaybe = error "TODO: Implement bindMaybe"
+bindMaybe f x = case x of
+  Just a -> f a
+  _ -> Nothing
 
 instance Functor Maybe where
-  fmap = error "TODO: Implement fmap for (Maybe a)"
+  fmap f (Just a) = Just (f a)
+  fmap f Nothing = Nothing
 
 instance Applicative Maybe where
-  pure = error "TODO: Implement Applicative pure for Maybe"
-  (<*>) = error "TODO: Implement Applicative (<*>) for Maybe"
+  pure a = Just a
+  (<*>) (Just f) (Just b) = Just (f b)
+  (<*>) (Just f) Nothing = Nothing
+  (<*>) Nothing _ = Nothing
 
 instance Monad Maybe where
-  (>>=) = error "TODO: Implement Monad (>>=) for Maybe"
+  (>>=) = flip bindMaybe
+  -- (>>=) f g = do
+  --   x <- f
+  --   case x of
+  --     Nothing -> g x
+  --     _ -> g x
+      -- Just a -> (g a)
+  --   g x
 
 computeSumInDo :: Maybe Int -> Maybe Int -> Maybe Int
 computeSumInDo getIntA getIntB = do
