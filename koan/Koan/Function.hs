@@ -15,19 +15,6 @@ enrolled = False
 flip :: (a -> b -> c) -> b -> a -> c
 flip = error "TODO: Implement flip"
 
-<<<<<<< HEAD
-($) :: (a -> b) -> a -> b
-($) = error "TODO: Implement ($)"
-
-instance K.Functor ((->) a) where
-  fmap = error "TODO: Implement fmap for (->)"
-
-instance K.Applicative ((->) a) where
-  pure = error "TODO: Implement Applicative pure for (->)"
-  (<*>) = error "TODO: Implement Applicative (<*>) for (->)"
-
-instance K.Monad ((->) a) where
-=======
 -- Hint: You're already implemented this.
 mapFunction :: (a -> b) -> (r -> a) -> r -> b
 mapFunction = error "TODO: Implement mapFunction"
@@ -46,5 +33,4 @@ instance K.Applicative ((->) r) where
   (<*>) = error "TODO: Implement Applicative (<*>) for (->)"
 
 instance K.Monad ((->) r) where
->>>>>>> 04e2858ee94a449b2b51491e77e1b6b7a50ddba9
   (>>=) = error "TODO: Implement Monad (>>=) for (->)"

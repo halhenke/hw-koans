@@ -94,12 +94,13 @@ instance Monad Maybe where
 
 computeSumInDo :: Maybe Int -> Maybe Int -> Maybe Int
 computeSumInDo getIntA getIntB = do
-  _ <- getIntA
-  _ <- getIntB
-  return (error "TODO: Implement rest of computeSum")
+  x <- getIntA
+  y <- getIntB
+  return (x + y)
 
 computeSumWithApplicative :: Maybe Int -> Maybe Int -> Maybe Int
-computeSumWithApplicative = error "TODO: Implement computeSumWithApplicative with (<$>) and (<*>) instead of do notation"
+-- computeSumWithApplicative = error "TODO: Implement computeSumWithApplicative with (<$>) and (<*>) instead of do notation"
+computeSumWithApplicative a b = (+) <$> a <*> b
 
 type Host = String
 type Port = Int
