@@ -4,6 +4,7 @@
 
 module Check.List where
 
+<<<<<<< HEAD
 import qualified Data.List      as P
 import           Hedgehog.Extra
 import qualified Hedgehog.Gen   as Gen
@@ -14,6 +15,18 @@ import           Hedgehog
 import           Koan.List        as K
 import           Koan.Functor     as K
 import           Koan.Applicative as K
+=======
+import qualified Data.List        as P
+import           Hedgehog.Extra
+import qualified Hedgehog.Gen     as Gen
+import qualified Hedgehog.Range   as Range
+import qualified Prelude          as P
+
+import           Hedgehog
+import           Koan.Applicative as K
+import           Koan.Functor     as K
+import           Koan.List        as K
+>>>>>>> 04e2858ee94a449b2b51491e77e1b6b7a50ddba9
 import           Koan.Monad       as K
 import           Prelude          hiding (elem)
 
@@ -56,7 +69,8 @@ prop_tails = property $ do
 prop_map_list :: Property
 prop_map_list = property $ do
   xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
-  P.fmap (*2) xs === K.fmap (*2) xs
+  -- P.fmap (*2) xs === K.fmap (*2) xs
+  K.mapList (*2) xs === P.fmap (*2) xs
 
 prop_filter_list :: Property
 prop_filter_list = property $ do
@@ -76,8 +90,13 @@ prop_foldr_list = property $ do
 prop_apply_list :: Property
 prop_apply_list = property $ do
   xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
+<<<<<<< HEAD
   let fns = [(+ 2), (* 4), \x -> -x, mod 2]
   (fns K.<*> xs) === (fns P.<*> xs)
+=======
+  let fns = [(+ 2), (* 4), \x -> -x, (`mod` 2)]
+  K.applyList fns xs === (fns P.<*> xs)
+>>>>>>> 04e2858ee94a449b2b51491e77e1b6b7a50ddba9
 
 prop_bind_list :: Property
 prop_bind_list = property $ do
