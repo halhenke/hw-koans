@@ -7,13 +7,13 @@ import           Koan.Applicative as K
 import           Koan.Monad       as K
 
 enrolled :: Bool
-enrolled = False
+enrolled = True
 
 (.) :: (b -> c) -> (a -> b) -> a -> c
-(.) = error "TODO: Implement (.)"
+(.) f g x = f (g x)
 
 flip :: (a -> b -> c) -> b -> a -> c
-flip = error "TODO: Implement flip"
+flip f a b = f b a
 
 -- Hint: You're already implemented this.
 mapFunction :: (a -> b) -> (r -> a) -> r -> b
