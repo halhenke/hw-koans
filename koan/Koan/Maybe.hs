@@ -73,14 +73,16 @@ bindMaybe f x = case x of
   _ -> Nothing
 
 instance Functor Maybe where
-  fmap f (Just a) = Just (f a)
-  fmap f Nothing = Nothing
+  -- fmap f (Just a) = Just (f a)
+  -- fmap f Nothing = Nothing
+  fmap = mapMaybe
 
 instance Applicative Maybe where
   pure a = Just a
-  (<*>) (Just f) (Just b) = Just (f b)
-  (<*>) (Just f) Nothing = Nothing
-  (<*>) Nothing _ = Nothing
+  -- (<*>) (Just f) (Just b) = Just (f b)
+  -- (<*>) (Just f) Nothing = Nothing
+  -- (<*>) Nothing _ = Nothing
+  (<*>) = applyMaybe
 
 instance Monad Maybe where
   (>>=) = flip bindMaybe
@@ -111,7 +113,7 @@ data EndPoint = EndPoint
   } deriving (Eq, Show)
 
 mkEndPoint :: Maybe Host -> Maybe Int -> Maybe EndPoint
-mkEndPoint = error "TODO: Implement mkEndPoint using (<$>) and (<*>)"
+mkEndPoint h i = EndPoint <$> h <*> i
 
 data Connection = Connection
   { srcEndPoint :: EndPoint
@@ -119,4 +121,4 @@ data Connection = Connection
   } deriving (Eq, Show)
 
 mkConnection :: Maybe Host -> Maybe Port -> Maybe Host -> Maybe Port -> Maybe Connection
-mkConnection srcHost srcPort dstHost dstPort = error "TODO: Implement mkConnection using (<$>) and <*>"
+mkConnection srcHost srcPort dstHost dstPort = Connection <$> (mkEndPoint srcHost srcPort) <*> (mkEndPoint dstHost dstPort)
