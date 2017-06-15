@@ -13,10 +13,10 @@ module Koan.Simple where
 
 -- This is just hiding some of the standard library, as we're implemeting a lot
 -- of it as an exercise.
-import           Prelude hiding (all, any, const, curry, drop, dropWhile, elem, filter, flip, foldl, foldr, id, iterate, length, map, max, maximum, min, minimum, repeat, reverse, take, takeWhile, uncurry, zipWith, (!!), ($), (++), (.))
+import Prelude hiding (all, any, const, curry, drop, dropWhile, elem, filter, flip, foldl, foldr, id, iterate, length, map, max, maximum, min, minimum, repeat, reverse, take, takeWhile, uncurry, zipWith, (!!), ($), (++), (.))
 
 enrolled :: Bool
-enrolled = False
+enrolled = True
 
 -- There is only a single possible definition of the first two functions.
 -- Try to work out what they need to do based on their type signature alone.
@@ -28,7 +28,7 @@ const a b = a
 
 -- This is function composition, i.e. (f . g)(x) == f(g(x))
 (.) :: (b -> c) -> (a -> b) -> a -> c
-(.) a b x = a (b x) 
+(.) a b x = a (b x)
 
 -- This flips the argument order of a function, i.e.
 -- f(a,b) == (flip f)(b,a)
@@ -59,10 +59,11 @@ length [] = 0
 -- You'll probably need to use pattern matching.
 (!!) :: [a] -> Int -> Maybe a
 -- (!!) = error "TODO: Implement (!!)"
-(!!) (x:xs) b
-  | b > 0     = (!!) xs (b - 1)
-  | otherwise = Just x
 (!!) [] b = Nothing
+(!!) (x:xs) b
+  | b < 0     = Nothing
+  | b == 0    = Just x
+  | otherwise = (!!) xs (b - 1)
 
 
 
@@ -82,11 +83,11 @@ length [] = 0
 -- function or a sub function.
 reverse :: [a] -> [a]
 -- reverse (x:xs) = (reverse xs) : [x]
-reverse [] = [] 
+reverse [] = []
 reverse x = let
   helper [] y = y
   helper (y:ys) z = helper ys (y:z)
-  in helper x [] 
+  in helper x []
 
 --------------------------------------------------------------------------------
 -- Infinite lists
@@ -103,7 +104,7 @@ repeat a = a:repeat a
 -- Return a list of the result of repeatedly applying f to x
 -- i.e iterate f x = [x, f x, f (f x), ...]
 iterate :: (a -> a) -> a -> [a]
--- iterate f [] = [] 
+-- iterate f [] = []
 -- iterate f (x:xs) = (f x):(iterate f _xs)
 iterate f x = x : iterate f (f x)
 
@@ -128,15 +129,15 @@ drop n (x:xs)
 
 -- Take as long as the elements in the list satisfy the given predicate.
 takeWhile :: (a -> Bool) -> [a] -> [a]
-takeWhile f [] = [] 
-takeWhile f (x:xs) 
+takeWhile f [] = []
+takeWhile f (x:xs)
   | f x       = x : takeWhile f xs
   | otherwise = []
 
 -- You get the idea.
 dropWhile :: (a -> Bool) -> [a] -> [a]
-dropWhile f [] = [] 
-dropWhile f (x:xs) 
+dropWhile f [] = []
+dropWhile f (x:xs)
   | f x       = dropWhile f xs
   | otherwise = x:xs
 -- dropWhile _ []          =  []
@@ -163,7 +164,7 @@ filter f (x:xs) = case (f x) of
 -- The 'l' in `foldl` indicates that it is left-associative.
 foldl :: (b -> a -> b) -> b -> [a] -> b
 foldl f i [] = i
-foldl f i (x:xs) = foldl f (f i x) xs 
+foldl f i (x:xs) = foldl f (f i x) xs
 
 -- Similarly, the 'r' indicates `foldr` is right associative.
 foldr :: (a -> b -> b) -> b -> [a] -> b
@@ -200,7 +201,7 @@ zipWith f (x:xs) (y:ys) = f x y : zipWith f xs ys
 -- Turn an uncurried function (i.e. one that takes a tuple as its argument)
 -- and curry it (i.e. make it take its arguments one-by-one)
 curry :: ((a, b) -> c) -> a -> b -> c
-curry f a b = f (a, b) 
+curry f a b = f (a, b)
 
 -- The inverse of the above.
 uncurry :: (a -> b -> c) -> (a, b) -> c
@@ -244,12 +245,12 @@ maximum :: Ord a => [a] -> a
 -- maximum (x:xs) = foldr max x xs
 -- -- maximum [x] = x
 -- -- maximum (x:xs) = helper x xs
--- --   where 
+-- --   where
 -- --     helper a [] = a
 -- --     helper a b = foldr max a b
 --     -- helper a b = max a b
 maximum [] = error "TODO: Implement maximum"
-maximum (x:xs) = helper x xs 
+maximum (x:xs) = helper x xs
   where
     helper a [] = a
     helper a (b:bs) = helper (max a b) bs
