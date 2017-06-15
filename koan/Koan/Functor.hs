@@ -3,7 +3,7 @@ module Koan.Functor where
 import           Prelude hiding (Functor, fmap, (<$), (<$>))
 
 enrolled :: Bool
-enrolled = False
+enrolled = True
 
 {- | The 'Functor' class is used for types that can be mapped over.
 Instances of 'Functor' should satisfy the following laws:
@@ -22,13 +22,15 @@ class Functor f  where
   -- The default definition is @'fmap' . 'const'@, but this may be
   -- overridden with a more efficient version.
   (<$) :: a -> f b -> f a
-  (<$) = error "TODO: implement (<$)"
+  (<$) = fmap . const
 
 (<$>) :: Functor f => (a -> b) -> f a -> f b
-(<$>) = error "TODO: implement (<$>)"
+(<$>) = fmap
+-- (<$>) f (t a) = t (f a)
 
 ($>) :: Functor f => f a -> b -> f b
-($>) = error "TODO: implement ($>)"
+($>) = flip (<$)
 
 void :: Functor f => f a -> f ()
-void = error "TODO: implement void"
+-- void = (<$) ()
+void = (() <$)
