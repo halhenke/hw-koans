@@ -4,18 +4,6 @@
 
 module Check.List where
 
-<<<<<<< HEAD
-import qualified Data.List      as P
-import           Hedgehog.Extra
-import qualified Hedgehog.Gen   as Gen
-import qualified Hedgehog.Range as Range
-import qualified Prelude        as P
-
-import           Hedgehog
-import           Koan.List        as K
-import           Koan.Functor     as K
-import           Koan.Applicative as K
-=======
 import qualified Data.List        as P
 import           Hedgehog.Extra
 import qualified Hedgehog.Gen     as Gen
@@ -26,7 +14,6 @@ import           Hedgehog
 import           Koan.Applicative as K
 import           Koan.Functor     as K
 import           Koan.List        as K
->>>>>>> 04e2858ee94a449b2b51491e77e1b6b7a50ddba9
 import           Koan.Monad       as K
 import           Prelude          hiding (elem)
 
