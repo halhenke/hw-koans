@@ -51,7 +51,10 @@ test-suite koan-test
                       , Check.Monad
                       , Check.Ord
                       , Check.Parser
+<<<<<<< HEAD
                       , Check.Reader
+=======
+>>>>>>> This fixed something
                       , Check.Start
                       , Check.State
                       , Check.Simple
