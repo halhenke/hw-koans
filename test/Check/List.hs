@@ -66,29 +66,29 @@ prop_tails = property $ do
   xs  <- forAll $ Gen.list (Range.linear 0 100) (Gen.int Range.constantBounded)
   K.tails xs === P.tails xs
 
-prop_map_list :: Property
-prop_map_list = property $ do
+prop_mapList :: Property
+prop_mapList = property $ do
   xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
   -- P.fmap (*2) xs === K.fmap (*2) xs
   K.mapList (*2) xs === P.fmap (*2) xs
 
-prop_filter_list :: Property
-prop_filter_list = property $ do
+prop_filterList :: Property
+prop_filterList = property $ do
   xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
   filter even xs === K.filterList even xs
 
-prop_foldl_list :: Property
-prop_foldl_list = property $ do
+prop_foldlList :: Property
+prop_foldlList = property $ do
   xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
   K.foldlList (+) 0 xs === foldl (+) 0 xs
 
-prop_foldr_list :: Property
-prop_foldr_list = property $ do
+prop_foldrList :: Property
+prop_foldrList = property $ do
   xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
   K.foldrList (+) 0 xs === foldr (+) 0 xs
 
-prop_apply_list :: Property
-prop_apply_list = property $ do
+prop_applyList :: Property
+prop_applyList = property $ do
   xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
 <<<<<<< HEAD
   let fns = [(+ 2), (* 4), \x -> -x, mod 2]
@@ -98,8 +98,13 @@ prop_apply_list = property $ do
   K.applyList fns xs === (fns P.<*> xs)
 >>>>>>> 04e2858ee94a449b2b51491e77e1b6b7a50ddba9
 
-prop_bind_list :: Property
-prop_bind_list = property $ do
+prop_bindList :: Property
+prop_bindList = property $ do
+  xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
+  (replicate 5 `bindList` xs) === (xs P.>>= replicate 5)
+
+prop_bind_op :: Property
+prop_bind_op = property $ do
   xs <- forAll $ Gen.list (Range.linear 0 100) $ Gen.int Range.constantBounded
   (xs K.>>= replicate 5) === (xs P.>>= replicate 5)
 
