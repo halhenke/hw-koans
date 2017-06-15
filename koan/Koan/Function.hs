@@ -17,7 +17,7 @@ flip f a b = f b a
 
 -- Hint: You're already implemented this.
 mapFunction :: (a -> b) -> (r -> a) -> r -> b
-mapFunction = error "TODO: Implement mapFunction"
+mapFunction = (.)
 
 applyFunction :: (r -> a -> b) -> (r -> a) -> r -> b
 applyFunction = error "TODO: implement applyFunction"
