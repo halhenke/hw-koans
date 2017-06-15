@@ -4,50 +4,76 @@ import           Prelude          hiding (Either (..), isLeft, isRight, lefts, r
 import           Data.Bifunctor
 
 enrolled :: Bool
-enrolled = False
+enrolled = True
 
 data Either a b = Left a | Right b
 
 isLeft :: Either a b -> Bool
-isLeft = error "TODO: Implement isLeft"
+isLeft (Left _) = True
+isLeft (Right _) = False
 
 isRight :: Either a b -> Bool
-isRight = error "TODO: Implement isRight"
+isRight (Left _) = False
+isRight (Right _) = True
 
 lefts :: [Either a b] -> [a]
-lefts = error "TODO: Implement lefts"
+-- lefts [] = []
+-- lefts (Left x:xs) = x:(lefts xs)
+-- lefts (Right x:xs) = (lefts xs)
+-- lefts x = filter isLeft (_ x)
+lefts xs = foldl go [] xs
+  where go :: [a] -> Either a b -> [a]
+        go c (Left l)   = c ++ [l]
+        go c (Right _)  = c
 
 rights :: [Either a b] -> [b]
-rights = error "TODO: Implement rights"
+rights xs = foldl go [] xs
+  where go :: [b] -> Either a b -> [b]
+        go c (Right r)   = c ++ [r]
+        go c (Left _)  = c
 
 either :: (a -> c) -> (b -> c) -> Either a b -> c
-either = error "TODO: Implement either"
+either f g e = case e of
+  Left l    -> f l
+  Right r   -> g r
 
 -- If you want a challenge, try to implement this using `foldr`
 partition :: [Either a b] -> ([a], [b])
-partition = error "TODO: Implement partition"
+partition xs = foldr go ([], []) xs where
+  go :: Either a b -> ([a], [b]) -> ([a], [b])
+  go e (x, y) = case e of
+    Left l    -> (l:x, y)
+    Right r   -> (x, r:y)
 
 mapEither :: (b -> c) -> Either a b -> Either a c
-mapEither = error "TODO: Implement mapEither"
+mapEither f e = case e of
+  -- Right r   -> fmap f (Right r)
+  Right r   -> Right (f r)
+  Left l    -> Left l
 
 bimapEither :: (a -> c) -> (b -> d) -> Either a b -> Either c d
-bimapEither = error "TODO: Implement bimapEither"
+bimapEither f g e = case e of
+  Left l  -> Left (f l)
+  Right r -> Right (g r)
 
 applyEither :: Either a (b -> c) -> Either a b -> Either a c
-applyEither = error "TODO: Implement applyEither"
+applyEither (Right f) (Right x)  = Right (f x)
+applyEither (Left l) _  = Left l
+applyEither _ (Left l)  = Left l
 
 bindEither :: (b -> Either a c) -> Either a b -> Either a c
-bindEither = error "TODO: Implement bindEither"
+bindEither f (Left l) = Left l
+bindEither f (Right r) = f r
 
 instance Functor (Either a) where
-  fmap = error "TODO: implement fmap for Either a"
+  fmap = mapEither
 
 instance Bifunctor Either where
-  bimap = error "TODO: implement bimap for Either"
+  bimap = bimapEither
 
 instance Applicative (Either a) where
-  pure = error "TODO: Implement Applicative pure for Either a"
-  (<*>) = error "TODO: Implement Applicative (<*>) for Either a"
+  pure = Right
+  (<*>) = applyEither
 
 instance Monad (Either a) where
-  (>>=) = error "TODO: Implement Monad (>>=) for Either a"
+  (>>=) = flip bindEither
