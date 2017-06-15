@@ -86,7 +86,8 @@ foldrList f x (y:ys) = foldrList f z ys where
 applyList :: [a -> b] -> [a] -> [b]
 applyList [] y = []
 applyList f [] = []
-applyList (f:fs) (y:ys) = (f y) : (applyList fs ys)
+-- applyList (f:fs) (y:ys) = (f y) : (applyList fs ys)
+applyList (f:fs) y = (mapList f y ++ (applyList fs y))
 
 bindList :: (a -> [b]) -> [a] -> [b]
 bindList f [] = []
