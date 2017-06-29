@@ -4,12 +4,14 @@ import qualified Check.Alternative
 import qualified Check.Applicative
 import qualified Check.Either
 import qualified Check.Eq
+import qualified Check.Function
 import qualified Check.Functor
 import qualified Check.List
 import qualified Check.Maybe
 import qualified Check.Monad
 import qualified Check.Ord
 import qualified Check.Parser
+import qualified Check.Reader
 import qualified Check.Simple
 import qualified Check.Start
 import qualified Check.State
@@ -21,12 +23,14 @@ import qualified Koan.Alternative
 import qualified Koan.Applicative
 import qualified Koan.Either
 import qualified Koan.Eq
+import qualified Koan.Function
 import qualified Koan.Functor
 import qualified Koan.List
 import qualified Koan.Maybe
 import qualified Koan.Monad
 import qualified Koan.Ord
 import qualified Koan.Parser
+import qualified Koan.Reader
 import qualified Koan.Simple
 import qualified Koan.Start
 import qualified Koan.State
@@ -41,12 +45,14 @@ tests =
   , (Koan.Applicative.enrolled  , Check.Applicative.tests )
   , (Koan.Either.enrolled       , Check.Either.tests      )
   , (Koan.Eq.enrolled           , Check.Eq.tests          )
+  , (Koan.Function.enrolled     , Check.Function.tests    )
   , (Koan.Functor.enrolled      , Check.Functor.tests     )
   , (Koan.List.enrolled         , Check.List.tests        )
   , (Koan.Maybe.enrolled        , Check.Maybe.tests       )
   , (Koan.Monad.enrolled        , Check.Monad.tests       )
   , (Koan.Ord.enrolled          , Check.Ord.tests         )
   , (Koan.Parser.enrolled       , Check.Parser.tests      )
+  , (Koan.Reader.enrolled       , Check.Reader.tests      )
   , (Koan.Simple.enrolled       , Check.Simple.tests      )
   , (Koan.Start.enrolled        , Check.Start.tests       )
   , (Koan.State.enrolled        , Check.State.tests       )

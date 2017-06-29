@@ -27,6 +27,7 @@ library
                       , Koan.Monad
                       , Koan.Ord
                       , Koan.Parser
+                      , Koan.Reader
                       , Koan.Simple
                       , Koan.Start
                       , Koan.State
@@ -43,11 +44,14 @@ test-suite koan-test
                       , Check.Applicative
                       , Check.Either
                       , Check.Eq
+                      , Check.Function
                       , Check.Functor
                       , Check.List
                       , Check.Maybe
                       , Check.Monad
                       , Check.Ord
+                      , Check.Parser
+                      , Check.Reader
                       , Check.Start
                       , Check.State
                       , Check.Simple
