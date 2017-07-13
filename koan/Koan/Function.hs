@@ -1,6 +1,6 @@
 module Koan.Function where
 
-import           Prelude          hiding ((.), ($))
+import           Prelude          hiding ((.), ($), flip)
 
 import           Koan.Functor     as K
 import           Koan.Applicative as K
@@ -20,7 +20,8 @@ mapFunction :: (a -> b) -> (r -> a) -> r -> b
 mapFunction = (.)
 
 applyFunction :: (r -> a -> b) -> (r -> a) -> r -> b
-applyFunction = error "TODO: implement applyFunction"
+-- applyFunction = flip (.)
+applyFunction f g h = f h (g h)
 
 bindFunction :: (a -> r -> b) -> (r -> a) -> r -> b
 bindFunction = error "TODO: implement bindFunction"
